@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EMI Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      padding: 20px 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 320px;
+    }
+    h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      margin-top: 15px;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #007bff;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .result {
+      margin-top: 15px;
+      padding: 10px;
+      background: #e9f7ef;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>EMI Calculator</h2>
+
+    <label for="amount">Loan Amount (₹)</label>
+    <input type="number" id="amount" placeholder="e.g. 500000">
+
+    <label for="rate">Annual Interest Rate (%)</label>
+    <input type="number" id="rate" placeholder="e.g. 10">
+
+    <label for="years">Tenure (years)</label>
+    <input type="number" id="years" placeholder="e.g. 5">
+
+    <button onclick="calculateEMI()">Calculate EMI</button>
+
+    <div class="result" id="result">Monthly EMI: ₹ 0</div>
+  </div>
+
+  <script>
+    function calculateEMI() {
+      const amount = parseFloat(document.getElementById('amount').value);
+      const annualRate = parseFloat(document.getElementById('rate').value);
+      const years = parseFloat(document.getElementById('years').value);
+
+      if (!amount || !annualRate || !years) {
+        document.getElementById('result').innerText = 'Please enter all values';
+        return;
+      }
+
+      const monthlyRate = annualRate / 12 / 100;
+      const months = years * 12;
+
+      // EMI formula: E = P * r * (1+r)^n / ((1+r)^n - 1)
+      const factor = Math.pow(1 + monthlyRate, months);
+      const emi = amount * monthlyRate * factor / (factor - 1);
+
+      document.getElementById('result').innerText =
+        'Monthly EMI: ₹ ' + emi.toFixed(2);
+    }
+  </script>
+</body>
+</html>
